@@ -1,5 +1,8 @@
 //  EK Using when care about how the cost in the flow work , Dinic only care about the flow 
-
+/*Use Dinic when the problem only asks for maximum flow / feasibility / unweighted matching, because it is much faster and simpler than cost-based flow algorithms.  
+Use MCMF when each unit of flow has an associated cost (or profit) and the problem asks to minimize total cost or maximize total gain under flow constraints.  
+Use Edmonds-Karp only as a basic reference / learning template or when constraints are very small, since it is usually much slower than Dinic in practice.
+*/
 template<class T>
 struct MCMF {
     struct edge {
