@@ -1,3 +1,5 @@
+//  EK Using when care about how the cost in the flow work , Dinic only care about the flow 
+
 template<class T>
 struct MCMF {
     struct edge {
