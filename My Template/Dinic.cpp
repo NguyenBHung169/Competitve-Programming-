@@ -1,3 +1,5 @@
+// Using when only care about the flow amount, faster than EdmondKarp
+
 struct Dinic {
     struct edge {
         int to, rev, id;
