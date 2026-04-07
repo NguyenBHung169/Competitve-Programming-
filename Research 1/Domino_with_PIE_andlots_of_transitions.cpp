@@ -75,7 +75,7 @@ void build_way(int l, int r, int top){
 					add(dp[cur ^ 1][mask & (full ^ (1 << k))], val);
 				}
 			}
-			cur ^= 1;
+			cur ^= 1; // flip state 
 		}
 
 		
