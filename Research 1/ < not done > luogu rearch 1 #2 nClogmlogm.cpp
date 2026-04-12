@@ -178,7 +178,28 @@ namespace SAT2 {
  pair<int , int>s[N*N] ;
  int cnt , cl , cr ;
  bool check(int x , int y){
- 	
+ 	  // int lf = 0 , rt = tot ;
+ 	  int ini_cr = cr , ini_cl = cl ;
+ 	 while(cl_cand[cl].first >x ){
+ 	 	remove_or(cl , y);
+ 	 	cl--;
+	  }
+	  cl = ini_cl;
+	  while(cl_cand[cr].first() > x){
+	  	remove_or(cr , x);
+	  	cr--;
+	  }
+	  cr = ini_cr;
+	  while(cr_cand[cl].second() > y){
+	  	remove_or(cl, x);
+	  	cl--;
+	  }
+	  while(cr_cand[cr].second() > x){
+	  	remove_or(cr, y);
+	  	cr--;
+	  }
+	
+	  
 	 return SAT2::satisfiable(n); // check if clauses matching
  }
  
@@ -253,7 +274,15 @@ signed main(){
 	cand.erase(unique(all(cand)), cand.end()) ;
 	int ans = 1e9 ;
 	tot = 0 ; 
-	cl = cr = tot ;
+	cl = tot = 0 ;
+	cr = (int)cand.size() ;
+	L(i , 0 , (int)cand.size()){
+		cl_cand[++tot]  = make_pair(cand[i] , cand[(int)cand.size() - i +1]);
+		cr_cand[tot]    = make_pair(cand[(int)cand.size()-i+1] , cand[i]);
+	}
+	sort(all(cl_cand));   
+	reverse(all(cl_cand)) ;
+	sort(all(cr_cand));
 /*	for(auto cands : cand){
 		int l = 0 , r = (int)val.size()-1 , best = -1 ;
 		while(l < r){
