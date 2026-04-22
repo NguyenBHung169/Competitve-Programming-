@@ -169,7 +169,7 @@ int find_dth(int x, int d){
 		lct.push(x);
 		int l = lct.t[x].c[0] , r = lct.t[x].c[1];
 		if(d <= lct.t[r].sz){
-			x = r ; 
+			x = r ;  // priority r because the path go right - current - left
 			continue ;
 		}
 		d-= lct.t[r].sz ; 
@@ -261,6 +261,7 @@ signed main(){
 	}
 
 	for(int i = 0 ; i < m ; i++) add(i, i , INF) ;
+	// build reverse graph from desc w 
 	for(int i = m -1; i>=0 ; i--){
 		add(uu[i],vv[i],ww[i]);
 	};
@@ -288,3 +289,19 @@ signed main(){
 		cout<<endl ; 
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Algorithms : destimate the path by subtract -1 from the capacity/ weight from the first x-th prefix vertex everytime , when 
+start ope on the lct , find the first next egde that have cap / w = 1 and check whether go over it, if yes update the next point vertex egde of the node that currently
+point to that */
