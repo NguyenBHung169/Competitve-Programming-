@@ -79,7 +79,7 @@ signed main(){
 	}
 	topo() ;
 	
-	memset(dp, INF + 20 , sizeof(dp)) ;
+	memset(dp, INF + 20 , sizeof(dp)) ; // initialize value of DP for taking the min cost 
 	dp[0][0][0] = 0 ; 
 	L(i, 1, 27){
 		L(S , 0 , (1 << cnt)){
@@ -88,12 +88,13 @@ signed main(){
 					auto T = S ;   // the next state
 					// if i in a cycle, we don't use nxt[i] , so its cycle broken
 					if(b[i] && nxt[i] != j ){
-						T |= (1 << (b[i] -1)) ;
+						T |= (1 << (b[i] -1)) ; // add the index cycle of i to the ban-masked
 					}
 					// if j in a cycle , choose i->j make the cycle broken
 					if(b[j] && (nxt[i] != j || b[i] != b[j])){
-						T |= (1 << (b[j] -1));
+						T |= (1 << (b[j] -1));   // add the id cycle of j 
 					}
+					// change the flag t because do not choose the cycle-edge
 					dp[i][T][t | (nxt[i] != j)] = min(dp[i][T][t | (nxt[i] != j)], dp[i-1][S][t] + w[i][j]);
 				}
 			}
