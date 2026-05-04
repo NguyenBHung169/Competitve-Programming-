@@ -154,6 +154,139 @@ vector<int>solve(){
 			}
 		}
 	}
+	 vector<int> ans;
+    vector<int> pre, suf;
+    deque<int> dq;
+
+    // Dựa trên các khối đã truy vết, trước tiên xử lý các khối bắc qua vòng.
+    // Mục tiêu là đưa chúng về hẳn prefix hoặc suffix để sau đó greedy LEFT/RIGHT xử lý.
+    for (int i = 1; i <= m; i++) {
+        int l = segs[i - 1].first;
+        int r = segs[i - 1].second;
+
+        if (r <= n) {
+            // Khối nằm hoàn toàn trong suffix ban đầu.
+            suf.push_back(r - l + 1);
+        } else if (l > n) {
+            // Khối nằm hoàn toàn trong prefix sau khi duỗi.
+            pre.push_back(r - l + 1);
+        } else {
+            // Khối bắc qua vòng: gồm đoạn [l,n] và [1,r-n].
+            int lhs = n - l + 1;
+            int rhs = r - n;
+
+            // Chọn hướng dồn có lợi hơn theo tiêu chí move_r >= move_l giống code gốc.
+            if (move_r(l, r) >= move_l(l, r)) {
+                // Dồn phần bên trái sang phải bằng thao tác 2.
+                while (lhs >= 2) {
+                    lhs -= 2;
+                    rhs++;
+                    ans.push_back(2);
+                }
+
+                // Nếu còn lẻ 1 phần tử bên trái thì dùng 1 rồi 2 để chỉnh lại.
+                if (lhs == 1) {
+                    rhs--;
+                    ans.push_back(1);
+                    ans.push_back(2);
+                }
+
+                pre.push_back(rhs);
+            } else {
+                // Dồn phần bên phải sang trái bằng thao tác 1.
+                while (rhs >= 2) {
+                    rhs -= 2;
+                    lhs++;
+                    ans.push_back(1);
+                }
+
+                // Nếu còn lẻ 1 phần tử bên phải thì dùng 2 rồi 1 để chỉnh lại.
+                if (rhs == 1) {
+                    lhs--;
+                    ans.push_back(2);
+                    ans.push_back(1);
+                }
+
+                suf.push_back(lhs);
+            }
+        }
+    }
+
+    // Sau khi xử lý khối bắc vòng, các độ dài khối còn lại được đưa vào deque.
+    // pre nằm phía trước, suf nằm phía sau.
+    for (int x : pre) dq.push_back(x);
+    for (int x : suf) dq.push_back(x);
+
+    // Gom khối ở bên trái.
+    // Với một khối lớn, dùng 1 1 2 để giảm độ dài đi 3.
+    // Khi còn 4 thì dùng 1 1 để đưa về 2.
+    // Khi còn 2 thì dùng 1 để đưa về 1.
+    auto LEFT = [&]() {
+        while (!dq.empty() && dq.front() != 1) {
+            int x = dq.front();
+            dq.pop_front();
+
+            while (x > 4) {
+                x -= 3;
+                ans.push_back(1);
+                ans.push_back(1);
+                ans.push_back(2);
+            }
+
+            if (x == 4) {
+                x = 2;
+                ans.push_back(1);
+                ans.push_back(1);
+            } else {
+                x = 1;
+                ans.push_back(1);
+            }
+
+            dq.push_back(x);
+        }
+    };
+
+    // Gom khối ở bên phải.
+    // Đối xứng với LEFT:
+    // dùng 2 2 1 để giảm độ dài đi 3.
+    // Khi còn 4 thì dùng 2 2 để đưa về 2.
+    // Khi còn 2 thì dùng 2 để đưa về 1.
+    auto RIGHT = [&]() {
+        while (!dq.empty() && dq.back() != 1) {
+            int x = dq.back();
+            dq.pop_back();
+
+            while (x > 4) {
+                x -= 3;
+                ans.push_back(2);
+                ans.push_back(2);
+                ans.push_back(1);
+            }
+
+            if (x == 4) {
+                x = 2;
+                ans.push_back(2);
+                ans.push_back(2);
+            } else {
+                x = 1;
+                ans.push_back(2);
+            }
+
+            dq.push_front(x);
+        }
+    };
+
+    // Theo cấu trúc đồ thị trạng thái đơn giản:
+    // chỉ cần quét trái, phải, trái, phải là gom được toàn bộ khối về đúng dạng.
+    LEFT();
+    RIGHT();
+    LEFT();
+    RIGHT();
+
+    return ans;
+}
+
+
 }
 
 
