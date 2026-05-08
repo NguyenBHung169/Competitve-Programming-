@@ -287,18 +287,19 @@ vector<int>solve(){
 }
 
 
-}
 
 
+#define L(i , j , k) for(int i = (j) ; i<=(int)(k) ;i++)
+#define R(i, j , k) for(int i=(j) ; i>=(int)(k);i++)
 
 signed main(){
 	ios :: sync_with_stdio(false);
 	cin.tie(0);
 	cin >> t ; 
 	while(t--){
-		L(i , 0 , n) cin >> a[i] ; 
-		L(i , 0,  m) cin >> b[i] ;
-		L(i , 0 , n) a[i+n] =a[i];
+		L(i , 1 , n) cin >> a[i] ; 
+		L(i , 1,  m) cin >> b[i] ;
+		L(i , 1 , n) a[i+n] =a[i];
 		auto work = solve(a) ;
 		if(work != vector<int>{-1}){
 			cout << tot ; 
@@ -306,18 +307,18 @@ signed main(){
 				cout << x << " " ;
 			}
 		}
-		reverse(all(a)) ; 
-		reverse(all(b)) ;
+		reverse(a+1,a+n+1) ; 
+		reverse(b+1,b+n+1) ;
 		work = solve(a) ;
 		if(work != vector<int>{-1}){
-			cout << tot ; 
+			cout << "Yes" << endl ; 
 			for(auto x : ans){
-				cout << x << " " ;
+				cout << 3-x << " " ;
 			}
+			cout << endl ;
 		}
-		cout << -1 ; 
+		cout << "No" << endl ; 
 	}
 }
-
 
 
