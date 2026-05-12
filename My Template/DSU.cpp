@@ -54,3 +54,27 @@ struct DSU {
         return sz[x];
     }
 };
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n, q;
+    cin >> n >> q;
+
+    DSU dsu;
+    dsu.init(n);
+
+    while (q--) {
+        int type, u, v;
+        cin >> type >> u >> v;
+
+        if (type == 1) {
+            dsu.unite(u, v);
+        } else {
+            cout << (dsu.same(u, v) ? "YES" : "NO") << '\n';
+        }
+    }
+
+    return 0;
+}
