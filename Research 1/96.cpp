@@ -122,12 +122,13 @@ signed main(){
 		
 		
 	}
+	// PIE 
 	for(int i=1; i< tot+1;i++){
 		for(int mask = 0 ; mask < (1<<8) ; mask++){
 			int time  = cnt[i][mask];
 			if(time == 0) continue;
 			int now = i ; 
-			for(int k = B-1; k >-1 ; k--){
+			for(int k = B-1;~k ; k--){
 					now  = nxt[now][(mask >> k)&1] ;
 					sum[now] += time ;
 				}
@@ -138,4 +139,3 @@ signed main(){
 		cout << sum[pos[i]] << endl ;
 	}
 }
-
